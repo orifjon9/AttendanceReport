@@ -1,0 +1,745 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="AttendanceDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="attendance_block">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="varchar" MaxLength="12" Nullable="false" />
+          <Property Name="BeginDate" Type="date" Nullable="false" />
+          <Property Name="EndDate" Type="date" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Required" Type="int" Nullable="false" />
+          <Property Name="Semester" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="attendance_location">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Building" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Capacity" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Room" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="attendance_record">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="Barcode" Type="varchar" MaxLength="13" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+          <Property Name="Time" Type="time" Precision="7" Nullable="false" />
+          <Property Name="LocationId" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="TimeslotId" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="attendance_session">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+          <Property Name="BlockId" Type="varchar" MaxLength="12" />
+          <Property Name="TimeslotId" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="attendance_timeslot">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="BeginTime" Type="time" Precision="7" Nullable="false" />
+          <Property Name="EndTime" Type="time" Precision="7" Nullable="false" />
+          <Property Name="Title" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="courses">
+          <Key>
+            <PropertyRef Name="Number" />
+          </Key>
+          <Property Name="Number" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Abbr" Type="varchar" MaxLength="255" />
+          <Property Name="Description" Type="varchar" MaxLength="4000" />
+          <Property Name="Name" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="enrollment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" />
+          <Property Name="Status" Type="varchar" MaxLength="50" />
+          <Property Name="OfferId" Type="int" />
+          <Property Name="StudentId" Type="char" MaxLength="11" />
+        </EntityType>
+        <EntityType Name="faculty">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Firstname" Type="varchar" MaxLength="50" />
+          <Property Name="Lastname" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="offered">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Active" Type="bit" />
+          <Property Name="Capacity" Type="int" />
+          <Property Name="DE" Type="bit" />
+          <Property Name="Enrolled" Type="int" />
+          <Property Name="Period" Type="varchar" MaxLength="50" />
+          <Property Name="StartDate" Type="datetime" />
+          <Property Name="CourseNumber" Type="varchar" MaxLength="50" />
+          <Property Name="FacultyId" Type="int" />
+        </EntityType>
+        <EntityType Name="person">
+          <Key>
+            <PropertyRef Name="PersonId" />
+          </Key>
+          <Property Name="PersonId" Type="char" MaxLength="11" Nullable="false" />
+          <Property Name="EmailAddress" Type="varchar" MaxLength="255" />
+          <Property Name="Firstname" Type="varchar" MaxLength="255" />
+          <Property Name="Lastname" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="student">
+          <Key>
+            <PropertyRef Name="StudentId" />
+          </Key>
+          <Property Name="StudentId" Type="char" MaxLength="11" Nullable="false" />
+          <Property Name="Barcode" Type="char" MaxLength="13" />
+          <Property Name="Entry" Type="datetime" />
+          <Property Name="Status" Type="varchar" MaxLength="50" />
+          <Property Name="VisaStatus" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="userrole">
+          <Key>
+            <PropertyRef Name="UserName" />
+          </Key>
+          <Property Name="UserName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="TypeId" Type="int" Nullable="false" />
+          <Property Name="ObjectId" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_attendance_record_attendance_location">
+          <End Role="attendance_location" Type="Self.attendance_location" Multiplicity="1" />
+          <End Role="attendance_record" Type="Self.attendance_record" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="attendance_location">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="attendance_record">
+              <PropertyRef Name="LocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_attendance_record_attendance_timeslot">
+          <End Role="attendance_timeslot" Type="Self.attendance_timeslot" Multiplicity="1" />
+          <End Role="attendance_record" Type="Self.attendance_record" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="attendance_timeslot">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="attendance_record">
+              <PropertyRef Name="TimeslotId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_attendance_session_attendance_block">
+          <End Role="attendance_block" Type="Self.attendance_block" Multiplicity="0..1" />
+          <End Role="attendance_session" Type="Self.attendance_session" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="attendance_block">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="attendance_session">
+              <PropertyRef Name="BlockId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_attendance_session_attendance_timeslot">
+          <End Role="attendance_timeslot" Type="Self.attendance_timeslot" Multiplicity="0..1" />
+          <End Role="attendance_session" Type="Self.attendance_session" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="attendance_timeslot">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="attendance_session">
+              <PropertyRef Name="TimeslotId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_enrollment_offered">
+          <End Role="offered" Type="Self.offered" Multiplicity="0..1" />
+          <End Role="enrollment" Type="Self.enrollment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="offered">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="enrollment">
+              <PropertyRef Name="OfferId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_enrollment_student">
+          <End Role="student" Type="Self.student" Multiplicity="0..1" />
+          <End Role="enrollment" Type="Self.enrollment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="student">
+              <PropertyRef Name="StudentId" />
+            </Principal>
+            <Dependent Role="enrollment">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_offered_courses">
+          <End Role="courses" Type="Self.courses" Multiplicity="0..1" />
+          <End Role="offered" Type="Self.offered" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="courses">
+              <PropertyRef Name="Number" />
+            </Principal>
+            <Dependent Role="offered">
+              <PropertyRef Name="CourseNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_offered_faculty">
+          <End Role="faculty" Type="Self.faculty" Multiplicity="0..1" />
+          <End Role="offered" Type="Self.offered" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="faculty">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="offered">
+              <PropertyRef Name="FacultyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_student_person">
+          <End Role="person" Type="Self.person" Multiplicity="1" />
+          <End Role="student" Type="Self.student" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="person">
+              <PropertyRef Name="PersonId" />
+            </Principal>
+            <Dependent Role="student">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AttendanceDBModelStoreContainer">
+          <EntitySet Name="attendance_block" EntityType="Self.attendance_block" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="attendance_location" EntityType="Self.attendance_location" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="attendance_record" EntityType="Self.attendance_record" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="attendance_session" EntityType="Self.attendance_session" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="attendance_timeslot" EntityType="Self.attendance_timeslot" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="courses" EntityType="Self.courses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="enrollment" EntityType="Self.enrollment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="faculty" EntityType="Self.faculty" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="offered" EntityType="Self.offered" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="person" EntityType="Self.person" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="student" EntityType="Self.student" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="userrole" EntityType="Self.userrole" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_attendance_record_attendance_location" Association="Self.FK_attendance_record_attendance_location">
+            <End Role="attendance_location" EntitySet="attendance_location" />
+            <End Role="attendance_record" EntitySet="attendance_record" />
+          </AssociationSet>
+          <AssociationSet Name="FK_attendance_record_attendance_timeslot" Association="Self.FK_attendance_record_attendance_timeslot">
+            <End Role="attendance_timeslot" EntitySet="attendance_timeslot" />
+            <End Role="attendance_record" EntitySet="attendance_record" />
+          </AssociationSet>
+          <AssociationSet Name="FK_attendance_session_attendance_block" Association="Self.FK_attendance_session_attendance_block">
+            <End Role="attendance_block" EntitySet="attendance_block" />
+            <End Role="attendance_session" EntitySet="attendance_session" />
+          </AssociationSet>
+          <AssociationSet Name="FK_attendance_session_attendance_timeslot" Association="Self.FK_attendance_session_attendance_timeslot">
+            <End Role="attendance_timeslot" EntitySet="attendance_timeslot" />
+            <End Role="attendance_session" EntitySet="attendance_session" />
+          </AssociationSet>
+          <AssociationSet Name="FK_enrollment_offered" Association="Self.FK_enrollment_offered">
+            <End Role="offered" EntitySet="offered" />
+            <End Role="enrollment" EntitySet="enrollment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_enrollment_student" Association="Self.FK_enrollment_student">
+            <End Role="student" EntitySet="student" />
+            <End Role="enrollment" EntitySet="enrollment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_offered_courses" Association="Self.FK_offered_courses">
+            <End Role="courses" EntitySet="courses" />
+            <End Role="offered" EntitySet="offered" />
+          </AssociationSet>
+          <AssociationSet Name="FK_offered_faculty" Association="Self.FK_offered_faculty">
+            <End Role="faculty" EntitySet="faculty" />
+            <End Role="offered" EntitySet="offered" />
+          </AssociationSet>
+          <AssociationSet Name="FK_student_person" Association="Self.FK_student_person">
+            <End Role="person" EntitySet="person" />
+            <End Role="student" EntitySet="student" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AttendanceDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="attendance_block">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" MaxLength="12" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="BeginDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Required" Type="Int32" Nullable="false" />
+          <Property Name="Semester" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="attendance_session" Relationship="Self.FK_attendance_session_attendance_block" FromRole="attendance_block" ToRole="attendance_session" />
+        </EntityType>
+        <EntityType Name="attendance_location">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Building" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Capacity" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Room" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="attendance_record" Relationship="Self.FK_attendance_record_attendance_location" FromRole="attendance_location" ToRole="attendance_record" />
+        </EntityType>
+        <EntityType Name="attendance_record">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="Barcode" Type="String" MaxLength="13" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Time" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="LocationId" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TimeslotId" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="attendance_location" Relationship="Self.FK_attendance_record_attendance_location" FromRole="attendance_record" ToRole="attendance_location" />
+          <NavigationProperty Name="attendance_timeslot" Relationship="Self.FK_attendance_record_attendance_timeslot" FromRole="attendance_record" ToRole="attendance_timeslot" />
+        </EntityType>
+        <EntityType Name="attendance_session">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="BlockId" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="TimeslotId" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="attendance_block" Relationship="Self.FK_attendance_session_attendance_block" FromRole="attendance_session" ToRole="attendance_block" />
+          <NavigationProperty Name="attendance_timeslot" Relationship="Self.FK_attendance_session_attendance_timeslot" FromRole="attendance_session" ToRole="attendance_timeslot" />
+        </EntityType>
+        <EntityType Name="attendance_timeslot">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="BeginTime" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="EndTime" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="Title" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="attendance_record" Relationship="Self.FK_attendance_record_attendance_timeslot" FromRole="attendance_timeslot" ToRole="attendance_record" />
+          <NavigationProperty Name="attendance_session" Relationship="Self.FK_attendance_session_attendance_timeslot" FromRole="attendance_timeslot" ToRole="attendance_session" />
+        </EntityType>
+        <EntityType Name="cours">
+          <Key>
+            <PropertyRef Name="Number" />
+          </Key>
+          <Property Name="Number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Abbr" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="offereds" Relationship="Self.FK_offered_courses" FromRole="courses" ToRole="offered" />
+        </EntityType>
+        <EntityType Name="enrollment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="OfferId" Type="Int32" />
+          <Property Name="StudentId" Type="String" MaxLength="11" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="offered" Relationship="Self.FK_enrollment_offered" FromRole="enrollment" ToRole="offered" />
+          <NavigationProperty Name="student" Relationship="Self.FK_enrollment_student" FromRole="enrollment" ToRole="student" />
+        </EntityType>
+        <EntityType Name="faculty">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Firstname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Lastname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="offereds" Relationship="Self.FK_offered_faculty" FromRole="faculty" ToRole="offered" />
+        </EntityType>
+        <EntityType Name="offered">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Active" Type="Boolean" />
+          <Property Name="Capacity" Type="Int32" />
+          <Property Name="DE" Type="Boolean" />
+          <Property Name="Enrolled" Type="Int32" />
+          <Property Name="Period" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="StartDate" Type="DateTime" Precision="3" />
+          <Property Name="CourseNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FacultyId" Type="Int32" />
+          <NavigationProperty Name="cours" Relationship="Self.FK_offered_courses" FromRole="offered" ToRole="courses" />
+          <NavigationProperty Name="enrollments" Relationship="Self.FK_enrollment_offered" FromRole="offered" ToRole="enrollment" />
+          <NavigationProperty Name="faculty" Relationship="Self.FK_offered_faculty" FromRole="offered" ToRole="faculty" />
+        </EntityType>
+        <EntityType Name="person">
+          <Key>
+            <PropertyRef Name="PersonId" />
+          </Key>
+          <Property Name="PersonId" Type="String" MaxLength="11" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="EmailAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Firstname" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Lastname" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="student" Relationship="Self.FK_student_person" FromRole="person" ToRole="student" />
+        </EntityType>
+        <EntityType Name="student">
+          <Key>
+            <PropertyRef Name="StudentId" />
+          </Key>
+          <Property Name="StudentId" Type="String" MaxLength="11" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Barcode" Type="String" MaxLength="13" FixedLength="true" Unicode="false" />
+          <Property Name="Entry" Type="DateTime" Precision="3" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="VisaStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="enrollments" Relationship="Self.FK_enrollment_student" FromRole="student" ToRole="enrollment" />
+          <NavigationProperty Name="person" Relationship="Self.FK_student_person" FromRole="student" ToRole="person" />
+        </EntityType>
+        <EntityType Name="userrole">
+          <Key>
+            <PropertyRef Name="UserName" />
+          </Key>
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TypeId" Type="Int32" Nullable="false" />
+          <Property Name="ObjectId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_attendance_session_attendance_block">
+          <End Role="attendance_block" Type="Self.attendance_block" Multiplicity="0..1" />
+          <End Role="attendance_session" Type="Self.attendance_session" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="attendance_block">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="attendance_session">
+              <PropertyRef Name="BlockId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_attendance_record_attendance_location">
+          <End Role="attendance_location" Type="Self.attendance_location" Multiplicity="1" />
+          <End Role="attendance_record" Type="Self.attendance_record" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="attendance_location">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="attendance_record">
+              <PropertyRef Name="LocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_attendance_record_attendance_timeslot">
+          <End Role="attendance_timeslot" Type="Self.attendance_timeslot" Multiplicity="1" />
+          <End Role="attendance_record" Type="Self.attendance_record" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="attendance_timeslot">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="attendance_record">
+              <PropertyRef Name="TimeslotId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_attendance_session_attendance_timeslot">
+          <End Role="attendance_timeslot" Type="Self.attendance_timeslot" Multiplicity="0..1" />
+          <End Role="attendance_session" Type="Self.attendance_session" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="attendance_timeslot">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="attendance_session">
+              <PropertyRef Name="TimeslotId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_offered_courses">
+          <End Role="courses" Type="Self.cours" Multiplicity="0..1" />
+          <End Role="offered" Type="Self.offered" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="courses">
+              <PropertyRef Name="Number" />
+            </Principal>
+            <Dependent Role="offered">
+              <PropertyRef Name="CourseNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_enrollment_offered">
+          <End Role="offered" Type="Self.offered" Multiplicity="0..1" />
+          <End Role="enrollment" Type="Self.enrollment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="offered">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="enrollment">
+              <PropertyRef Name="OfferId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_enrollment_student">
+          <End Role="student" Type="Self.student" Multiplicity="0..1" />
+          <End Role="enrollment" Type="Self.enrollment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="student">
+              <PropertyRef Name="StudentId" />
+            </Principal>
+            <Dependent Role="enrollment">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_offered_faculty">
+          <End Role="faculty" Type="Self.faculty" Multiplicity="0..1" />
+          <End Role="offered" Type="Self.offered" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="faculty">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="offered">
+              <PropertyRef Name="FacultyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_student_person">
+          <End Role="person" Type="Self.person" Multiplicity="1" />
+          <End Role="student" Type="Self.student" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="person">
+              <PropertyRef Name="PersonId" />
+            </Principal>
+            <Dependent Role="student">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AttendanceDBEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="attendance_block" EntityType="Self.attendance_block" />
+          <EntitySet Name="attendance_location" EntityType="Self.attendance_location" />
+          <EntitySet Name="attendance_record" EntityType="Self.attendance_record" />
+          <EntitySet Name="attendance_session" EntityType="Self.attendance_session" />
+          <EntitySet Name="attendance_timeslot" EntityType="Self.attendance_timeslot" />
+          <EntitySet Name="courses" EntityType="Self.cours" />
+          <EntitySet Name="enrollments" EntityType="Self.enrollment" />
+          <EntitySet Name="faculties" EntityType="Self.faculty" />
+          <EntitySet Name="offereds" EntityType="Self.offered" />
+          <EntitySet Name="people" EntityType="Self.person" />
+          <EntitySet Name="students" EntityType="Self.student" />
+          <EntitySet Name="userroles" EntityType="Self.userrole" />
+          <AssociationSet Name="FK_attendance_session_attendance_block" Association="Self.FK_attendance_session_attendance_block">
+            <End Role="attendance_block" EntitySet="attendance_block" />
+            <End Role="attendance_session" EntitySet="attendance_session" />
+          </AssociationSet>
+          <AssociationSet Name="FK_attendance_record_attendance_location" Association="Self.FK_attendance_record_attendance_location">
+            <End Role="attendance_location" EntitySet="attendance_location" />
+            <End Role="attendance_record" EntitySet="attendance_record" />
+          </AssociationSet>
+          <AssociationSet Name="FK_attendance_record_attendance_timeslot" Association="Self.FK_attendance_record_attendance_timeslot">
+            <End Role="attendance_timeslot" EntitySet="attendance_timeslot" />
+            <End Role="attendance_record" EntitySet="attendance_record" />
+          </AssociationSet>
+          <AssociationSet Name="FK_attendance_session_attendance_timeslot" Association="Self.FK_attendance_session_attendance_timeslot">
+            <End Role="attendance_timeslot" EntitySet="attendance_timeslot" />
+            <End Role="attendance_session" EntitySet="attendance_session" />
+          </AssociationSet>
+          <AssociationSet Name="FK_offered_courses" Association="Self.FK_offered_courses">
+            <End Role="courses" EntitySet="courses" />
+            <End Role="offered" EntitySet="offereds" />
+          </AssociationSet>
+          <AssociationSet Name="FK_enrollment_offered" Association="Self.FK_enrollment_offered">
+            <End Role="offered" EntitySet="offereds" />
+            <End Role="enrollment" EntitySet="enrollments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_enrollment_student" Association="Self.FK_enrollment_student">
+            <End Role="student" EntitySet="students" />
+            <End Role="enrollment" EntitySet="enrollments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_offered_faculty" Association="Self.FK_offered_faculty">
+            <End Role="faculty" EntitySet="faculties" />
+            <End Role="offered" EntitySet="offereds" />
+          </AssociationSet>
+          <AssociationSet Name="FK_student_person" Association="Self.FK_student_person">
+            <End Role="person" EntitySet="people" />
+            <End Role="student" EntitySet="students" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AttendanceDBModelStoreContainer" CdmEntityContainer="AttendanceDBEntities1">
+          <EntitySetMapping Name="attendance_block">
+            <EntityTypeMapping TypeName="AttendanceDBModel.attendance_block">
+              <MappingFragment StoreEntitySet="attendance_block">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="BeginDate" ColumnName="BeginDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Required" ColumnName="Required" />
+                <ScalarProperty Name="Semester" ColumnName="Semester" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="attendance_location">
+            <EntityTypeMapping TypeName="AttendanceDBModel.attendance_location">
+              <MappingFragment StoreEntitySet="attendance_location">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Building" ColumnName="Building" />
+                <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Room" ColumnName="Room" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="attendance_record">
+            <EntityTypeMapping TypeName="AttendanceDBModel.attendance_record">
+              <MappingFragment StoreEntitySet="attendance_record">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Barcode" ColumnName="Barcode" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="TimeslotId" ColumnName="TimeslotId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="attendance_session">
+            <EntityTypeMapping TypeName="AttendanceDBModel.attendance_session">
+              <MappingFragment StoreEntitySet="attendance_session">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="BlockId" ColumnName="BlockId" />
+                <ScalarProperty Name="TimeslotId" ColumnName="TimeslotId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="attendance_timeslot">
+            <EntityTypeMapping TypeName="AttendanceDBModel.attendance_timeslot">
+              <MappingFragment StoreEntitySet="attendance_timeslot">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="BeginTime" ColumnName="BeginTime" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="courses">
+            <EntityTypeMapping TypeName="AttendanceDBModel.cours">
+              <MappingFragment StoreEntitySet="courses">
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="Abbr" ColumnName="Abbr" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="enrollments">
+            <EntityTypeMapping TypeName="AttendanceDBModel.enrollment">
+              <MappingFragment StoreEntitySet="enrollment">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="OfferId" ColumnName="OfferId" />
+                <ScalarProperty Name="StudentId" ColumnName="StudentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="faculties">
+            <EntityTypeMapping TypeName="AttendanceDBModel.faculty">
+              <MappingFragment StoreEntitySet="faculty">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Firstname" ColumnName="Firstname" />
+                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="offereds">
+            <EntityTypeMapping TypeName="AttendanceDBModel.offered">
+              <MappingFragment StoreEntitySet="offered">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+                <ScalarProperty Name="DE" ColumnName="DE" />
+                <ScalarProperty Name="Enrolled" ColumnName="Enrolled" />
+                <ScalarProperty Name="Period" ColumnName="Period" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="CourseNumber" ColumnName="CourseNumber" />
+                <ScalarProperty Name="FacultyId" ColumnName="FacultyId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="people">
+            <EntityTypeMapping TypeName="AttendanceDBModel.person">
+              <MappingFragment StoreEntitySet="person">
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="Firstname" ColumnName="Firstname" />
+                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="students">
+            <EntityTypeMapping TypeName="AttendanceDBModel.student">
+              <MappingFragment StoreEntitySet="student">
+                <ScalarProperty Name="StudentId" ColumnName="StudentId" />
+                <ScalarProperty Name="Barcode" ColumnName="Barcode" />
+                <ScalarProperty Name="Entry" ColumnName="Entry" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="VisaStatus" ColumnName="VisaStatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="userroles">
+            <EntityTypeMapping TypeName="AttendanceDBModel.userrole">
+              <MappingFragment StoreEntitySet="userrole">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="ObjectId" ColumnName="ObjectId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
