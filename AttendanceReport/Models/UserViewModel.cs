@@ -1,0 +1,30 @@
+﻿using AttendanceReport.Helpers;
+using AttendanceReport.Models.Person;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace AttendanceReport.Models
+{
+    public class UserViewModel
+    {
+        public String UserName { get; set; }
+        public UserRole Role { get; set; }
+
+        public PersonViewModel Person { get; set; }
+
+        public static explicit operator UserViewModel(userrole userRole) {
+
+            if (userRole == null) return null;
+
+            var userViewModel = new UserViewModel() {
+                UserName = userRole.UserName,
+                Role = (UserRole)userRole.TypeId
+            };
+            
+            return userViewModel;
+        }
+
+    }
+}

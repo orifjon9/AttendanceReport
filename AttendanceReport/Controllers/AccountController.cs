@@ -9,18 +9,24 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using AttendanceReport.Models;
+using AttendanceReport.Repositories;
+using AttendanceReport.Security;
 
 namespace AttendanceReport.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        UnitOfWork uow = new UnitOfWork();
+
         //
         // GET: /Account/Login
         [AllowAnonymous]
-        public ActionResult Login(string returnUrl)
+        public ActionResult Login()
         {
-            ViewBag.ReturnUrl = returnUrl;
+            if(SessionPersister.Current != null)
+                return RedirectToAction("index", "home");
+
             return View();
         }
 
@@ -36,37 +42,24 @@ namespace AttendanceReport.Controllers
                 return View(model);
             }
 
-            // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, change to shouldLockout: true
-            //var result = null;// await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-            //switch (result)
-            //{
-            //    case SignInStatus.Success:
-            //        return RedirectToLocal(returnUrl);
-            //    case SignInStatus.LockedOut:
-            //        return View("Lockout");
-            //    case SignInStatus.RequiresVerification:
-            //        return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-            //    case SignInStatus.Failure:
-            //    default:
-            //        ModelState.AddModelError("", "Invalid login attempt.");
-            //        return View(model);
-            //}
-
-            return View();
-        }
-
-       
-        //
-        // GET: /Account/Register
-        [AllowAnonymous]
-        public ActionResult Register()
-        {
-            return View();
+            var userViewModel = await uow.UserRepository.GetUserAsync(model.UserName, model.Password);
+            if (userViewModel == null)
+            {
+                ModelState.AddModelError("", "Invalid login attempt.");
+                return View(model);
+            }
+            SessionPersister.UserName = userViewModel.UserName;
+            return RedirectToAction("index", "home");
         }
 
         
-
-       
+        [AllowAnonymous]
+        public ActionResult Logout()
+        {
+            SessionPersister.UserName = null;
+            SessionPersister.Current = null;
+            return RedirectToAction("index", "home");
+        }
+        
     }
 }

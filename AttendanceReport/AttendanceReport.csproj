@@ -229,8 +229,10 @@
     <Compile Include="attendance_timeslot.cs">
       <DependentUpon>AttendanceModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\AccessDeniedController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="cours.cs">
       <DependentUpon>AttendanceModel.tt</DependentUpon>
     </Compile>
@@ -243,6 +245,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Enums\UserRole.cs" />
+    <Compile Include="Models\Person\FacultyViewModel.cs" />
+    <Compile Include="Models\Person\PersonViewModel.cs" />
+    <Compile Include="Models\Person\StudentViewModel.cs" />
+    <Compile Include="Models\UserViewModel.cs" />
+    <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="offered.cs">
       <DependentUpon>AttendanceModel.tt</DependentUpon>
@@ -251,6 +259,11 @@
       <DependentUpon>AttendanceModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\UnitOfWork.cs" />
+    <Compile Include="Repositories\UserRepository.cs" />
+    <Compile Include="Security\AttendanceAuthorizeAttribute.cs" />
+    <Compile Include="Security\AttendancePrincipal.cs" />
+    <Compile Include="Security\SessionPersister.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="student.cs">
       <DependentUpon>AttendanceModel.tt</DependentUpon>
@@ -317,6 +330,8 @@
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\AccessDenied\Index.cshtml" />
+    <Content Include="Views\Student\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

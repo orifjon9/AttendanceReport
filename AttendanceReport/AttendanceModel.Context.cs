@@ -13,10 +13,10 @@ namespace AttendanceReport
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class AttendanceDBEntities1 : DbContext
+    public partial class AttendanceDBEntities : DbContext
     {
-        public AttendanceDBEntities1()
-            : base("name=AttendanceDBEntities1")
+        public AttendanceDBEntities()
+            : base("name=AttendanceDBEntities")
         {
         }
     
