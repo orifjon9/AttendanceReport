@@ -22,15 +22,10 @@ namespace AttendanceReport.Repositories
             return context.userroles.Select(s => (UserViewModel)s);
         }
 
-        public UserViewModel GetById(int Id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public UserViewModel GetUser(String login)
+        public UserViewModel GetById(object login)
         {
             return (UserViewModel)context.userroles
-                .Where(w => w.UserName == login)
+                .Where(w => w.UserName == login.ToString())
                 .FirstOrDefault();
         }
         public async Task<UserViewModel> GetUserAsync(String login)

@@ -20,6 +20,18 @@ namespace AttendanceReport.Repositories
             }
         }
 
+        private StudentRepository studentRepository;
+        public StudentRepository StudentRepository
+        {
+            get
+            {
+                if (this.studentRepository == null)
+                    this.studentRepository = new StudentRepository(this.context);
+
+                return this.studentRepository;
+            }
+        }
+
 
         public void Save()
         {

@@ -20,11 +20,35 @@
                 @Html.ActionLink("Attendance Report", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
+                <ul class="nav nav-pills navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+
+                    @if (SessionPersister.IsAuthorized() && SessionPersister.Current != null)
+                    {
+                        if (SessionPersister.Current.Role == AttendanceReport.Helpers.UserRole.Administrator)
+                        {
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Student<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/Student/Find">Find</a></li>
+                                    <li><a href="/Student/Courses">View courses</a></li>
+                                    <li><a href="/Student/Attendance">View attendance</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">User<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/User/Find">Find</a></li>
+                                    <li><a href="/User/Manage">Manage</a></li>
+                                </ul>
+                            </li>
+                        }
+                    }
                 </ul>
+
                 @Html.Partial("_LoginPartial")
             </div>
         </div>

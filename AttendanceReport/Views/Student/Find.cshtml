@@ -1,0 +1,78 @@
+﻿@using AttendanceReport.Models
+@model StudentViewModel
+@{
+    ViewBag.Title = "Find Student";
+}
+
+<h2>@ViewBag.Title</h2>
+<div class="row">
+    <div class="col-xs-8 col-xs-offset-2">
+        <div class="input-group">
+            <table>
+                    <tr>
+                        <td>
+                            <input type="text" class="form-control" id="studentid" placeholder = "Search by StudentID" />
+                        </td>
+                        <td>
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">Search</button>
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+        </div>
+    </div>
+    <br>
+    @if (Model != null)
+    {
+        <hr />
+        <div class="col-sm-12">
+            
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Student</h3>
+                </div>
+
+                <table class="table table-hover" id="dev-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>E-mail</th>
+                            <th>Barcode</th>
+                            <th>DateEntry</th>
+                            <th>Status</th>
+                            <th>VisaStatus</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>@Model.StudentId</td>
+                            <td>@Model.Person.Firstname</td>
+                            <td>@Model.Person.Lastname</td>
+                            <td>@Model.Person.EmailAddress</td>
+                            <td>@Model.Barcode</td>
+                            <td>@Model.DateEntry</td>
+                            <td>@Model.Status</td>
+                            <td>@Model.VisaStatus</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            @Html.Partial("~/Views/Contents/EnrollmentCourses.cshtml", Model.Enrollments)
+        </div>
+    }
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+        $('.btn-default').on('click', function ()
+        {
+            window.location.href = '/student/find/' + $('#studentid').val();
+        });
+    </script>
+}

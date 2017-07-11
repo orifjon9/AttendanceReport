@@ -7,7 +7,7 @@ namespace AttendanceReport.Repositories
 {
     public interface IRepository<T, U>
     {
-        T GetById(int Id);
+        T GetById(object Id);
         IEnumerable<T> GetAll();
         bool Insert(T t);
         bool Update(T t);

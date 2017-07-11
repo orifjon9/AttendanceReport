@@ -246,6 +246,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Enums\UserRole.cs" />
+    <Compile Include="Models\EnrollmentViewModel.cs" />
+    <Compile Include="Models\OfferedViewModel.cs" />
     <Compile Include="Models\Person\FacultyViewModel.cs" />
     <Compile Include="Models\Person\PersonViewModel.cs" />
     <Compile Include="Models\Person\StudentViewModel.cs" />
@@ -259,6 +261,7 @@
       <DependentUpon>AttendanceModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\StudentRepository.cs" />
     <Compile Include="Repositories\UnitOfWork.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="Security\AttendanceAuthorizeAttribute.cs" />
@@ -332,6 +335,10 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\AccessDenied\Index.cshtml" />
     <Content Include="Views\Student\Index.cshtml" />
+    <Content Include="Views\Student\Find.cshtml" />
+    <Content Include="Views\Student\ViewAttendance.cshtml" />
+    <Content Include="Views\Contents\EnrollmentCourses.cshtml" />
+    <Content Include="Views\Student\Courses.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

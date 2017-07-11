@@ -1,4 +1,5 @@
-﻿using AttendanceReport.Models;
+﻿using AttendanceReport.Helpers;
+using AttendanceReport.Models;
 using AttendanceReport.Repositories;
 using System;
 using System.Collections.Generic;
@@ -15,8 +16,8 @@ namespace AttendanceReport.Security
 
         public AttendancePrincipal(string userName) {
             userRepository = new UserRepository(new AttendanceDBEntities());
-            this.user = userRepository.GetUser(userName);
 
+            this.user = userRepository.GetById(userName);
             this.Identity = new GenericIdentity(user.UserName);
         }
 
@@ -26,5 +27,7 @@ namespace AttendanceReport.Security
         {
             return role.ToLower().Contains(user.Role.ToString().ToLower());
         }
+
+        public UserRole Role { get { return this.user.Role; } }
     }
 }

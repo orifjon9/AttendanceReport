@@ -1,0 +1,44 @@
+﻿@using AttendanceReport.Models
+@model List<EnrollmentViewModel>
+
+@if (Model != null && Model.Count > 0)
+            {
+    <hr />
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Enrollment courses</h3>
+                </div>
+
+                <table class="table table-hover" id="dev-table">
+                    <thead>
+                        <tr>
+                            <th>CourseNumber</th>
+                            <th>StartDate</th>
+                            <th>Active</th>
+                            <th>Capacity</th>
+                            <th>DistanceEducation</th>
+                            <th>Enrolled</th>
+                            <th>Period</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (EnrollmentViewModel item in Model)
+                        {
+                            if (item.Offered != null)
+                            {
+                                <tr>
+                                    <td>@item.Offered.CourseNumber</td>
+                                    <td>@item.Offered.StartDate</td>
+                                    <td>@item.Offered.Active</td>
+                                    <td>@item.Offered.Capacity</td>
+                                    <td>@item.Offered.DistanceEducation</td>
+                                    <td>@item.Offered.Enrolled</td>
+                                    <td>@item.Offered.Period</td>
+
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+}
