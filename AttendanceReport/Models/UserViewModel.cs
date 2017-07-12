@@ -11,7 +11,8 @@ namespace AttendanceReport.Models
         public String UserName { get; set; }
         public UserRole Role { get; set; }
 
-        public PersonViewModel Person { get; set; }
+        public StudentViewModel Student { get; set; }
+        public FacultyViewModel Faculty { get; set; }
 
         public static explicit operator UserViewModel(userrole userRole) {
 

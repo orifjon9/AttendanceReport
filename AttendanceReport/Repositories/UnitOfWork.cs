@@ -32,6 +32,30 @@ namespace AttendanceReport.Repositories
             }
         }
 
+        private EnrollmentRepository enrollmentRepository;
+        public EnrollmentRepository EnrollmentRepository
+        {
+            get
+            {
+                if (this.enrollmentRepository == null)
+                    this.enrollmentRepository = new EnrollmentRepository(this.context);
+
+                return this.enrollmentRepository;
+            }
+        }
+
+        private OfferedRepository offeredRepository;
+        public OfferedRepository OfferedRepository
+        {
+            get
+            {
+                if (this.offeredRepository == null)
+                    this.offeredRepository = new OfferedRepository(this.context);
+
+                return this.offeredRepository;
+            }
+        }
+
 
         public void Save()
         {

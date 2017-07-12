@@ -26,5 +26,10 @@ namespace AttendanceReport.Models
         public Nullable<int> OfferId { get; set; }
         public string StudentId { get; set; }
         public OfferedViewModel Offered { get; set; }
+
+        public static explicit operator EnrollmentViewModel(enrollment en)
+        {
+            return new EnrollmentViewModel(en);
+        }
     }
 }

@@ -49,6 +49,7 @@ namespace AttendanceReport.Controllers
                 return View(model);
             }
             SessionPersister.UserName = userViewModel.UserName;
+           
             return RedirectToAction("index", "home");
         }
 

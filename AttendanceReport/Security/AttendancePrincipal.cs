@@ -29,5 +29,7 @@ namespace AttendanceReport.Security
         }
 
         public UserRole Role { get { return this.user.Role; } }
+
+        public UserViewModel User { get { return this.user; } }
     }
 }

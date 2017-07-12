@@ -8,7 +8,7 @@ namespace AttendanceReport.Security
     public static class SessionPersister
     {
         private static String usernameSession = "username";
-        static AttendancePrincipal principal;
+        static AttendancePrincipal principal = null;
         public static String UserName
         {
             get {

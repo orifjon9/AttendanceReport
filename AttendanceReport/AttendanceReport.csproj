@@ -231,8 +231,11 @@
     </Compile>
     <Compile Include="Controllers\AccessDeniedController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\FacultyController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Models\UserRoleViewModel.cs" />
     <Compile Include="cours.cs">
       <DependentUpon>AttendanceModel.tt</DependentUpon>
     </Compile>
@@ -252,6 +255,7 @@
     <Compile Include="Models\Person\PersonViewModel.cs" />
     <Compile Include="Models\Person\StudentViewModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />
+    <Compile Include="Repositories\FacultyRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="offered.cs">
@@ -261,6 +265,8 @@
       <DependentUpon>AttendanceModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\EnrollmentRepository.cs" />
+    <Compile Include="Repositories\OfferedRepository.cs" />
     <Compile Include="Repositories\StudentRepository.cs" />
     <Compile Include="Repositories\UnitOfWork.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
@@ -339,6 +345,9 @@
     <Content Include="Views\Student\ViewAttendance.cshtml" />
     <Content Include="Views\Contents\EnrollmentCourses.cshtml" />
     <Content Include="Views\Student\Courses.cshtml" />
+    <Content Include="Views\Faculty\Courses.cshtml" />
+    <Content Include="Views\User\Find.cshtml" />
+    <Content Include="Views\User\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

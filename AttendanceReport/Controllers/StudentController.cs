@@ -31,9 +31,11 @@ namespace AttendanceReport.Controllers
         [AttendanceAuthorizeAttribute(Roles = "Student")]
         public ActionResult Courses()
         {
-           
-                return View();
-            
+            if(SessionPersister.Current != null)
+                return View(uow.EnrollmentRepository
+                    .GetByStudentID(SessionPersister.Current.User.Student.StudentId));
+
+            return View("AccessDebied");
         }
 
         public ActionResult Attendance(string studentId)

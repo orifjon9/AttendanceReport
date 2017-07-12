@@ -1,4 +1,5 @@
-﻿using AttendanceReport.Models;
+﻿using AttendanceReport.Helpers;
+using AttendanceReport.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,24 +23,55 @@ namespace AttendanceReport.Repositories
             return context.userroles.Select(s => (UserViewModel)s);
         }
 
+        public IEnumerable<UserViewModel> FindAll(string id)
+        {
+            if (id.Length > 0)
+            {
+                return context.userroles
+                    .Where(w => w.UserName == id)
+                    .ToList()
+                    .Select(s=>ConvertTo(s));
+            }
+
+            return context.userroles
+                .ToList()
+                .Select(s => ConvertTo(s));
+        }
+
         public UserViewModel GetById(object login)
         {
-            return (UserViewModel)context.userroles
+            return ConvertTo(context.userroles
                 .Where(w => w.UserName == login.ToString())
-                .FirstOrDefault();
-        }
-        public async Task<UserViewModel> GetUserAsync(String login)
-        {
-            return (UserViewModel)context.userroles
-                .Where(w => w.UserName == login)
-                .FirstOrDefault();
+                .FirstOrDefault());
         }
 
         public async Task<UserViewModel> GetUserAsync(String login, String password)
         {
-            return (UserViewModel)context.userroles
+            return ConvertTo(context.userroles
                 .Where(w => w.UserName == login && w.Password == password)
-                .FirstOrDefault();
+                .FirstOrDefault());
+            
+        }
+
+        private UserViewModel ConvertTo(userrole user)
+        {
+            UserViewModel userViewModel = (UserViewModel)user;
+            if (user.TypeId == (int)UserRole.Student)
+            {
+                userViewModel.Student = (StudentViewModel)context.students
+                    .Where(w => w.StudentId == user.ObjectId)
+                    .FirstOrDefault();
+            }
+
+            if (user.TypeId == (int)UserRole.Faculty)
+            {
+                int facultyId = Convert.ToInt32(user.ObjectId);
+                userViewModel.Faculty = (FacultyViewModel)context.faculties
+                    .Where(w => w.Id == facultyId)
+                    .FirstOrDefault();
+            }
+
+            return userViewModel;
         }
 
         public bool Insert(UserViewModel t)
