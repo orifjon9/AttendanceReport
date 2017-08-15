@@ -17,7 +17,7 @@ namespace AttendanceReport.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        UnitOfWork uow = new UnitOfWork();
+        IUnitOfWork uow = new UnitOfWork();
 
         //
         // GET: /Account/Login
@@ -42,7 +42,7 @@ namespace AttendanceReport.Controllers
                 return View(model);
             }
 
-            var userViewModel = await uow.UserRepository.GetUserAsync(model.UserName, model.Password);
+            var userViewModel = uow.GetUser(model.UserName, model.Password);
             if (userViewModel == null)
             {
                 ModelState.AddModelError("", "Invalid login attempt.");

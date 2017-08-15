@@ -27,10 +27,11 @@
                                 <th>DistanceEducation</th>
                                 <th>Enrolled</th>
                                 <th>Period</th>
+                                <th>Attendance</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (OfferedViewModel item in Model)
+                            @foreach (OfferedViewModel item in Model.OrderBy(o=>o.StartDate))
                             {
                                 <tr>
                                     <td>@item.CourseNumber</td>
@@ -40,6 +41,7 @@
                                     <td>@item.DistanceEducation</td>
                                     <td>@item.Enrolled</td>
                                     <td>@item.Period</td>
+                                    <td><a href="/Attendance/Course/@item.Id">view</a></td>
                                 </tr>
                             }
                         </tbody>

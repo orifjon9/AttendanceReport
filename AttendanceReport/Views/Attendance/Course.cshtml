@@ -1,0 +1,74 @@
+﻿@using AttendanceReport.Models
+@model List<StudentAttendanceViewModel>
+@{
+    ViewBag.Title = "View attendance by course";
+}
+
+
+<div class="row">
+    @if (Model != null)
+    {
+        <div class="col-sx-12">
+            @if (Model != null && Model.Count > 0)
+            {
+                <hr />
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">View attendance by course</h3>
+                    </div>
+
+                    <table class="table table-hover" id="dev-table">
+                        <thead>
+                            <tr>
+                                <th>Course</th>
+                                <th>Student</th>
+                                <th>Max</th>
+                                <th>Part</th>
+                                <th>%</th>
+                                <th>Grade</th>
+                                @foreach (var item in Model.FirstOrDefault().Sessions)
+                                {
+                                    <th></th>
+                                }
+
+                                <th>Detail</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (StudentAttendanceViewModel item in Model.OrderBy(o => o.Student.StudentId))
+                            {
+                                <tr>
+                                    <td>@item.CourseOffered.CourseNumber</td>
+                                    <td>@item.Student.StudentId</td>
+                                    <td>@item.Sessions.Count</td>
+                                    <td>@item.AttendanceRecords.Count</td>
+                                    <td>@item.GetMeditaionPercentage().ToString("0.00")</td>
+                                    <td>@item.GetMeditationGrade()</td>
+
+                                    @foreach (var session in item.Sessions.OrderBy(o => o.Date))
+                                    {
+                                        if(item.CheckAttendanceDate(session.Date)) {
+                                            <td class="join">+</td>
+                                        }
+                                        else
+                                        {
+                                            <td class="not-join">X</td>
+                                        }
+                                    }
+
+
+                                    <td><a href="/Attendance/Details/@item.Student.StudentId/@item.CourseOffered.Id">view</a></td>
+                                </tr>
+                                    }
+                        </tbody>
+                    </table>
+                </div>
+                            }
+        </div>
+            }
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+}

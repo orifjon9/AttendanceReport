@@ -31,5 +31,12 @@ namespace AttendanceReport.Models
         public Nullable<System.DateTime> StartDate { get; set; }
         public string CourseNumber { get; set; }
         public Nullable<int> FacultyId { get; set; }
+
+        public static explicit operator OfferedViewModel(offered off)
+        {
+            if (off == null) return null;
+
+            return new OfferedViewModel(off);
+        }
     }
 }

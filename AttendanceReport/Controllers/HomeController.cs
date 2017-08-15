@@ -17,7 +17,7 @@ namespace AttendanceReport.Controllers
         [AllowAnonymous]
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            ViewBag.Message = "Transcendental Meditation Attendance Report System.";
 
             return View();
         }
@@ -25,7 +25,7 @@ namespace AttendanceReport.Controllers
         [AllowAnonymous]
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "WATER team's contact.";
 
             return View();
         }

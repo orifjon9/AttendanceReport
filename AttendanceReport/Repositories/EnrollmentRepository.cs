@@ -34,9 +34,7 @@ namespace AttendanceReport.Repositories
                 .Select(s=>(EnrollmentViewModel)s)
                 .ToList();
         }
-
         
-
         public bool Insert(EnrollmentViewModel t)
         {
             throw new NotImplementedException();

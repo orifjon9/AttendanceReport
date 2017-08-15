@@ -23,7 +23,10 @@ namespace AttendanceReport.Repositories
 
         public OfferedViewModel GetById(object Id)
         {
-            throw new NotImplementedException();
+            int offeredId = Convert.ToInt32(Id);
+            return (OfferedViewModel)context.offereds
+                .Where(w => w.Id == offeredId)
+                .FirstOrDefault();
         }
 
         public bool Insert(OfferedViewModel t)
@@ -41,6 +44,13 @@ namespace AttendanceReport.Repositories
                  .Select(s=>new OfferedViewModel(s))
                  .ToList();
 
+        }
+
+        public List<OfferedViewModel> GetByStudentID(string studentID)
+        {
+            return context.enrollments
+                    .Where(w => w.StudentId == studentID).ToList()
+                    .Select(s => new OfferedViewModel(s.offered)).ToList();
         }
 
         public bool Delete(OfferedViewModel t)

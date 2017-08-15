@@ -231,10 +231,14 @@
     </Compile>
     <Compile Include="Controllers\AccessDeniedController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AttendanceController.cs" />
     <Compile Include="Controllers\FacultyController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Models\AttendanceRecordViewModel.cs" />
+    <Compile Include="Models\SessionViewModel.cs" />
+    <Compile Include="Models\StudentAttendanceViewModel.cs" />
     <Compile Include="Models\UserRoleViewModel.cs" />
     <Compile Include="cours.cs">
       <DependentUpon>AttendanceModel.tt</DependentUpon>
@@ -255,6 +259,7 @@
     <Compile Include="Models\Person\PersonViewModel.cs" />
     <Compile Include="Models\Person\StudentViewModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />
+    <Compile Include="Repositories\AttendanceRepository.cs" />
     <Compile Include="Repositories\FacultyRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
@@ -266,6 +271,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\EnrollmentRepository.cs" />
+    <Compile Include="Repositories\IUnitOfWork.cs" />
     <Compile Include="Repositories\OfferedRepository.cs" />
     <Compile Include="Repositories\StudentRepository.cs" />
     <Compile Include="Repositories\UnitOfWork.cs" />
@@ -342,12 +348,15 @@
     <Content Include="Views\AccessDenied\Index.cshtml" />
     <Content Include="Views\Student\Index.cshtml" />
     <Content Include="Views\Student\Find.cshtml" />
-    <Content Include="Views\Student\ViewAttendance.cshtml" />
     <Content Include="Views\Contents\EnrollmentCourses.cshtml" />
     <Content Include="Views\Student\Courses.cshtml" />
     <Content Include="Views\Faculty\Courses.cshtml" />
     <Content Include="Views\User\Find.cshtml" />
     <Content Include="Views\User\Create.cshtml" />
+    <Content Include="Views\Attendance\Course.cshtml" />
+    <Content Include="Views\Student\Attendance.cshtml" />
+    <Content Include="Views\Attendance\Student.cshtml" />
+    <Content Include="Views\Attendance\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

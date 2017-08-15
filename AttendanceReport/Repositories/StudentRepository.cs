@@ -28,6 +28,16 @@ namespace AttendanceReport.Repositories
             return (StudentViewModel)context.students.Where(w => w.StudentId == Id.ToString()).FirstOrDefault();
         }
 
+        public List<StudentViewModel> GetByOfferedId(int offerId)
+        {
+            return context.enrollments
+                .Where(w => w.OfferId == offerId)
+                .ToList()
+                .Select(s => (StudentViewModel)s.student)
+                .ToList();
+        }
+
+
         public bool Insert(StudentViewModel studentViewModel)
         {
             throw new NotImplementedException();

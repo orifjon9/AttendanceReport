@@ -9,21 +9,20 @@ using System.Web.Mvc;
 
 namespace AttendanceReport.Controllers
 {
-
-    [AttendanceAuthorizeAttribute(Roles = "Student, Administrator")]
     public class StudentController : Controller
     {
-        private UnitOfWork uow = new UnitOfWork();
+        private IUnitOfWork uow = new UnitOfWork();
         
         public ActionResult Index()
         {
             return View();
         }
-        
-        public ActionResult Find(string Id)
+
+        [AttendanceAuthorizeAttribute(Roles = "Staff")]
+        public ActionResult Find(string id)
         {
-            if(Id != null)
-                return View(uow.StudentRepository.GetById(Id));
+            if(!string.IsNullOrEmpty(id))
+                return View(uow.GetStudentById(id));
 
             return View();
         }
@@ -32,15 +31,20 @@ namespace AttendanceReport.Controllers
         public ActionResult Courses()
         {
             if(SessionPersister.Current != null)
-                return View(uow.EnrollmentRepository
-                    .GetByStudentID(SessionPersister.Current.User.Student.StudentId));
+                return View(uow.GetEnrollmentByStudentID(SessionPersister.Current.User.Student.StudentId));
 
             return View("AccessDebied");
         }
 
-        public ActionResult Attendance(string studentId)
+        [AttendanceAuthorizeAttribute(Roles = "Staff")]
+        public ActionResult Attendance(string id)
         {
-            return View();
+            if (string.IsNullOrEmpty(id))
+                return View();
+
+            var student = uow.GetStudentById(id);
+            var attendanceRecords = uow.GetByStudent(student);
+            return View(attendanceRecords);
         }
     }
 }

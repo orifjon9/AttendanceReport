@@ -13,11 +13,11 @@ namespace AttendanceReport.Controllers
     public class UserController : Controller
     {
 
-        UnitOfWork uow = new UnitOfWork();
+        IUnitOfWork uow = new UnitOfWork();
         // GET: User
         public ActionResult Find(string Id)
         {
-            return View(uow.UserRepository.FindAll(Id ?? "").ToList());
+            return View(uow.FindAllUser(Id ?? "").ToList());
         }
 
         public ActionResult Create()
@@ -33,10 +33,24 @@ namespace AttendanceReport.Controllers
                 return View(userRole);
             }
 
+            UserViewModel user = new UserViewModel()
+            {
+                UserName = userRole.UserName,
+                Password = userRole.Password,
+                Role = (Helpers.UserRole)userRole.TypeId,
+                Student = ((Helpers.UserRole)userRole.TypeId) == Helpers.UserRole.Student ? new StudentViewModel() { StudentId = userRole.ObjectId } : null,
+                Faculty = ((Helpers.UserRole)userRole.TypeId) == Helpers.UserRole.Faculty ? new FacultyViewModel() { Id = Convert.ToInt32(userRole.ObjectId) } : null
+            };
 
-            //@ViewBag.Error
+            if (uow.GetUserById(user.UserName) != null) {
+                ViewBag.Error = "This user exist in the database. Please, choose another name";
+                return View(userRole);
+            }
 
-            return View();
+            uow.InsertUser(user);
+            uow.Save();
+
+            return RedirectToAction("Find");
         }
 
         public ActionResult Edit(string id)
@@ -44,9 +58,16 @@ namespace AttendanceReport.Controllers
             return View();
         }
 
+        [HttpGet]
         public ActionResult Delete(string id)
         {
-            return View("Find");
+            if (!string.IsNullOrEmpty(id))
+            {
+                uow.DeleteUser(new UserViewModel() { UserName = id });
+                uow.Save();
+            }
+
+            return RedirectToAction("Find");
         }
     }
 }

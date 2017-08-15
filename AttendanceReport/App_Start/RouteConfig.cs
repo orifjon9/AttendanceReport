@@ -18,6 +18,12 @@ namespace AttendanceReport
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+
+            routes.MapRoute(
+                name: "Attendance",
+                url: "{controller}/{action}/{studentId}/{courseId}",
+                defaults: new { controller = "Attendance", action = "Details", studentId = UrlParameter.Optional, courseId = UrlParameter.Optional }
+            );
         }
     }
 }

@@ -11,6 +11,8 @@ namespace AttendanceReport.Models
         public String UserName { get; set; }
         public UserRole Role { get; set; }
 
+        public String Password { get; set; }
+
         public StudentViewModel Student { get; set; }
         public FacultyViewModel Faculty { get; set; }
 

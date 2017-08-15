@@ -1,0 +1,103 @@
+﻿@using AttendanceReport.Models
+@model StudentAttendanceViewModel
+@{
+    ViewBag.Title = "Detail information of attendance";
+}
+
+<div class="row">
+    @if (Model != null)
+    {
+        <div class="col-sm-12">
+            @if (Model != null)
+            {
+                <hr />
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">View attendance by course</h3>
+                    </div>
+
+                    <table class="table table-hover" id="dev-table">
+                        <thead>
+                            <tr>
+                                <th>Course</th>
+                                <th>Student</th>
+                                <th>Full name</th>
+                                <th>Max attendance</th>
+                                <th>Participated</th>
+                                <th>Percentage</th>
+                                <th>Grade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+                                <td>@Model.CourseOffered.CourseNumber</td>
+                                <td>@Model.Student.StudentId</td>
+                                <td>@string.Format("{0} {1}", Model.Student.Person.Lastname, Model.Student.Person.Firstname)</td>
+                                <td>@Model.Sessions.Count</td>
+                                <td>@Model.AttendanceRecords.Count</td>
+                                <td>@Model.GetMeditaionPercentage().ToString("0.00")</td>
+                                <td>@Model.GetMeditationGrade()</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <hr>
+
+                foreach (var month in Model.GetMonths())
+                {
+                    DateTime firstDay = new DateTime(Model.GetYear().Value, month, 1);
+
+                    <div class="month">
+                        <ul>
+
+                            <li style="text-align:center">
+                                @firstDay.ToString("MMM")<br>
+                                <span style="font-size:18px">@Model.GetYear()</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <ul class="weekdays">
+                        <li>Su</li>
+                        <li>Mo</li>
+                        <li>Tu</li>
+                        <li>We</li>
+                        <li>Th</li>
+                        <li>Fr</li>
+                        <li>Sa</li>
+                    </ul>
+
+                    <ul class="days">
+                        @for (int i = 0; i < (int)firstDay.DayOfWeek; i++)
+                        {
+                            <li></li>
+                        }
+
+                        @for (int i = 1; i <= DateTime.DaysInMonth(Model.GetYear().Value, month); i++)
+                        {
+                            if (!Model.CheckSessionDate(Model.GetYear().Value, month, i))
+                            {
+                                <li>@i</li>
+                            }
+                            else
+                            {
+                                <li><span class="@(Model.CheckAttendanceDate(Model.GetYear().Value, month, i) ? "active" : "inactive")">@i</span></li>
+                            }
+                        }
+                    </ul>
+                    <br/>
+                }
+            }
+        </div>
+    }
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+}
+
+

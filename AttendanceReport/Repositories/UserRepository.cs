@@ -45,7 +45,7 @@ namespace AttendanceReport.Repositories
                 .FirstOrDefault());
         }
 
-        public async Task<UserViewModel> GetUserAsync(String login, String password)
+        public UserViewModel GetUser(String login, String password)
         {
             return ConvertTo(context.userroles
                 .Where(w => w.UserName == login && w.Password == password)
@@ -55,6 +55,9 @@ namespace AttendanceReport.Repositories
 
         private UserViewModel ConvertTo(userrole user)
         {
+            if (user == null)
+                return null;
+
             UserViewModel userViewModel = (UserViewModel)user;
             if (user.TypeId == (int)UserRole.Student)
             {
@@ -74,14 +77,31 @@ namespace AttendanceReport.Repositories
             return userViewModel;
         }
 
-        public bool Insert(UserViewModel t)
+        public bool Insert(UserViewModel userViewModel)
         {
-            throw new NotImplementedException();
+            userrole userrole = new userrole()
+            {
+                UserName = userViewModel.UserName,
+                Password = userViewModel.Password,
+                TypeId = (int)userViewModel.Role,
+                ObjectId = userViewModel.Role == UserRole.Student ? userViewModel.Student.StudentId : (userViewModel.Role == UserRole.Faculty ? userViewModel.Faculty.Id.ToString() : null)
+            };
+
+            context.userroles.Add(userrole);
+
+            return true;
         }
 
-        public bool Delete(UserViewModel t)
+        public bool Delete(UserViewModel userViewModel)
         {
-            throw new NotImplementedException();
+            userrole userrole = context.userroles.Where(w => w.UserName == userViewModel.UserName).FirstOrDefault();
+            if (userrole != null)
+            {
+                context.userroles.Remove(userrole);
+                return true;
+            }
+
+            return false;
         }
 
         public bool Update(UserViewModel t)

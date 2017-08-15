@@ -11,12 +11,11 @@ namespace AttendanceReport.Controllers
     [AttendanceAuthorizeAttribute(Roles = "Faculty")]
     public class FacultyController : Controller
     {
-        UnitOfWork uow = new UnitOfWork();
+        IUnitOfWork uow = new UnitOfWork();
         public ActionResult Courses()
         {
             if (SessionPersister.Current != null)
-                return View(uow.OfferedRepository
-                    .GetByFacultyID(SessionPersister.Current.User.Faculty.Id));
+                return View(uow.GetOfferedByFacultyID(SessionPersister.Current.User.Faculty.Id));
 
             return View("AccessDebied");
         }
