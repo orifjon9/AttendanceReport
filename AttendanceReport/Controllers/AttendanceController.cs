@@ -1,4 +1,5 @@
 ﻿using AttendanceReport.Models;
+using AttendanceReport.Persistence.Repositories;
 using AttendanceReport.Repositories;
 using AttendanceReport.Security;
 using System;
@@ -19,7 +20,7 @@ namespace AttendanceReport.Controllers
             if (string.IsNullOrEmpty(id))
                 return View();
 
-            OfferedViewModel offered = uow.GetOfferedById(id);
+            OfferedViewModel offered = uow.OfferedRepository.GetById(Convert.ToInt32(id));
             var attendanceRecords = uow.GetByCourse(offered);
 
             return View(attendanceRecords);
@@ -41,8 +42,8 @@ namespace AttendanceReport.Controllers
             if (string.IsNullOrEmpty(studentId) || string.IsNullOrEmpty(courseId))
                 return View();
 
-            var student = uow.GetStudentById(studentId);
-            var offered = uow.GetOfferedById(courseId);
+            var student = uow.StudentRepository.GetById(studentId);
+            var offered = uow.OfferedRepository.GetById(Convert.ToInt32(courseId));
 
             var attendanceRecord = uow.GetByStudentCourse(student, offered);
             return View(attendanceRecord);

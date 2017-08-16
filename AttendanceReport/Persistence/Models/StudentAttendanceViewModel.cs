@@ -9,14 +9,14 @@ namespace AttendanceReport.Models
     {
         public StudentViewModel Student { get; set; }
         public OfferedViewModel CourseOffered { get; set; }
-        public List<AttendanceRecordViewModel> AttendanceRecords { get; set; }
-        public List<SessionViewModel> Sessions { get; set; }
+        public IEnumerable<AttendanceRecordViewModel> AttendanceRecords { get; set; }
+        public IEnumerable<SessionViewModel> Sessions { get; set; }
 
         public double GetMeditaionPercentage()
         {
-            if (AttendanceRecords.Count == 0)
+            if (AttendanceRecords.Count() == 0)
                 return 0;
-            return 100.0 * (AttendanceRecords.Count > Sessions.Count ? Sessions.Count : AttendanceRecords.Count) / Sessions.Count;
+            return 100.0 * (AttendanceRecords.Count() > Sessions.Count() ? Sessions.Count() : AttendanceRecords.Count()) / Sessions.Count();
         }
         
 

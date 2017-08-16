@@ -1,7 +1,7 @@
 ﻿@using AttendanceReport.Models
-@model List<EnrollmentViewModel>
+@model IEnumerable<EnrollmentViewModel>
 
-@if (Model != null && Model.Count > 0)
+@if (Model != null && Model.Count() > 0)
             {
     <hr />
             <div class="panel panel-success">

@@ -1,4 +1,5 @@
 ﻿using AttendanceReport.Models;
+using AttendanceReport.Persistence.Repositories;
 using AttendanceReport.Repositories;
 using AttendanceReport.Security;
 using System;
@@ -22,7 +23,7 @@ namespace AttendanceReport.Controllers
         public ActionResult Find(string id)
         {
             if(!string.IsNullOrEmpty(id))
-                return View(uow.GetStudentById(id));
+                return View(uow.StudentRepository.GetById(id));
 
             return View();
         }
@@ -31,7 +32,7 @@ namespace AttendanceReport.Controllers
         public ActionResult Courses()
         {
             if(SessionPersister.Current != null)
-                return View(uow.GetEnrollmentByStudentID(SessionPersister.Current.User.Student.StudentId));
+                return View(uow.EnrollmentRepository.GetByStudentID(SessionPersister.Current.User.Student.StudentId));
 
             return View("AccessDebied");
         }
@@ -42,7 +43,7 @@ namespace AttendanceReport.Controllers
             if (string.IsNullOrEmpty(id))
                 return View();
 
-            var student = uow.GetStudentById(id);
+            var student = uow.StudentRepository.GetById(id);
             var attendanceRecords = uow.GetByStudent(student);
             return View(attendanceRecords);
         }

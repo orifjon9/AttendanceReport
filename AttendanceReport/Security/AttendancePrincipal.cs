@@ -1,5 +1,6 @@
 ﻿using AttendanceReport.Helpers;
 using AttendanceReport.Models;
+using AttendanceReport.Persistence.Repositories;
 using AttendanceReport.Repositories;
 using System;
 using System.Collections.Generic;
@@ -12,12 +13,12 @@ namespace AttendanceReport.Security
     public class AttendancePrincipal : IPrincipal
     {
         private UserViewModel user;
-        private UserRepository userRepository;
+        private IUnitOfWork unitOfWork;
 
         public AttendancePrincipal(string userName) {
-            userRepository = new UserRepository(new AttendanceDBEntities());
+            unitOfWork = new UnitOfWork();
 
-            this.user = userRepository.GetById(userName);
+            this.user = unitOfWork.UserRepository.GetById(userName);
             this.Identity = new GenericIdentity(user.UserName);
         }
 

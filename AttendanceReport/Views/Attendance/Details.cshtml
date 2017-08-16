@@ -34,8 +34,8 @@
                                 <td>@Model.CourseOffered.CourseNumber</td>
                                 <td>@Model.Student.StudentId</td>
                                 <td>@string.Format("{0} {1}", Model.Student.Person.Lastname, Model.Student.Person.Firstname)</td>
-                                <td>@Model.Sessions.Count</td>
-                                <td>@Model.AttendanceRecords.Count</td>
+                                <td>@Model.Sessions.Count()</td>
+                                <td>@Model.AttendanceRecords.Count()</td>
                                 <td>@Model.GetMeditaionPercentage().ToString("0.00")</td>
                                 <td>@Model.GetMeditationGrade()</td>
                             </tr>

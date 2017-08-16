@@ -1,69 +1,71 @@
-﻿using AttendanceReport.Models;
+﻿using AttendanceReport.Core.Repositories;
+using AttendanceReport.Models;
+using AttendanceReport.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace AttendanceReport.Repositories
+namespace AttendanceReport.Persistence.Repositories
 {
-    public class UnitOfWork : IDisposable, IUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
-        private AttendanceDBEntities context = new AttendanceDBEntities();
+        private AttendanceDBEntities Context = new AttendanceDBEntities();
         private bool disposed = false;
         
-        private UserRepository userRepository;
-        protected UserRepository UserRepository {
+        private IUserRepository userRepository;
+        public IUserRepository UserRepository {
             get {
                 if (this.userRepository == null)
-                    this.userRepository = new UserRepository(this.context);
+                    this.userRepository = new UserRepository(Context);
 
                 return this.userRepository;
             }
         }
 
-        private StudentRepository studentRepository;
-        protected StudentRepository StudentRepository
+        private IStudentRepository studentRepository;
+        public IStudentRepository StudentRepository
         {
             get
             {
                 if (this.studentRepository == null)
-                    this.studentRepository = new StudentRepository(this.context);
+                    this.studentRepository = new StudentRepository(Context);
 
                 return this.studentRepository;
             }
         }
 
-        private EnrollmentRepository enrollmentRepository;
-        protected EnrollmentRepository EnrollmentRepository
+        private IEnrollmentRepository enrollmentRepository;
+        public IEnrollmentRepository EnrollmentRepository
         {
             get
             {
                 if (this.enrollmentRepository == null)
-                    this.enrollmentRepository = new EnrollmentRepository(this.context);
+                    this.enrollmentRepository = new EnrollmentRepository(Context);
 
                 return this.enrollmentRepository;
             }
         }
 
-        private OfferedRepository offeredRepository;
-        protected OfferedRepository OfferedRepository
+        private IOfferedRepository offeredRepository;
+        public IOfferedRepository OfferedRepository
         {
             get
             {
                 if (this.offeredRepository == null)
-                    this.offeredRepository = new OfferedRepository(this.context);
+                    this.offeredRepository = new OfferedRepository(Context);
 
                 return this.offeredRepository;
             }
         }
 
-        private AttendanceRepository attendanceRepository;
-        protected AttendanceRepository AttendanceRepository
+        private IAttendanceRepository attendanceRepository;
+        public IAttendanceRepository AttendanceRepository
         {
             get
             {
                 if (this.attendanceRepository == null)
-                    this.attendanceRepository = new AttendanceRepository(this.context);
+                    this.attendanceRepository = new AttendanceRepository(Context);
 
                 return this.attendanceRepository;
             }
@@ -71,10 +73,10 @@ namespace AttendanceReport.Repositories
 
 
 
-        public List<StudentAttendanceViewModel> GetByCourse(OfferedViewModel offered)
+        public IEnumerable<StudentAttendanceViewModel> GetByCourse(OfferedViewModel offered)
         {
             var records = new List<StudentAttendanceViewModel>();
-            var block = context.attendance_block
+            var block = Context.attendance_block
                 .Where(w => w.BeginDate == offered.StartDate)
                 .FirstOrDefault();
 
@@ -98,7 +100,7 @@ namespace AttendanceReport.Repositories
             return records;
         }
 
-        public List<StudentAttendanceViewModel> GetByStudent(StudentViewModel student)
+        public IEnumerable<StudentAttendanceViewModel> GetByStudent(StudentViewModel student)
         {
             var records = new List<StudentAttendanceViewModel>();
             var offereds = OfferedRepository.GetByStudentID(student.StudentId);
@@ -107,7 +109,7 @@ namespace AttendanceReport.Repositories
             {
                 foreach (var offered in offereds)
                 {
-                    attendance_block block = context.attendance_block
+                    attendance_block block = Context.attendance_block
                             .Where(w => w.BeginDate == offered.StartDate)
                             .FirstOrDefault();
 
@@ -133,7 +135,7 @@ namespace AttendanceReport.Repositories
         {
             var record = new StudentAttendanceViewModel();
 
-            attendance_block block = context.attendance_block
+            attendance_block block = Context.attendance_block
                             .Where(w => w.BeginDate == offered.StartDate)
                             .FirstOrDefault();
 
@@ -150,15 +152,15 @@ namespace AttendanceReport.Repositories
             return record;
         }
 
-        private List<AttendanceRecordViewModel> GetAttendanceRecords(String barcode, DateTime startDate, DateTime endDate)
+        private IEnumerable<AttendanceRecordViewModel> GetAttendanceRecords(String barcode, DateTime startDate, DateTime endDate)
         {
-            return AttendanceRepository.GetAll()
-                .Where(w => w.Barcode == barcode && (w.Date >= startDate && w.Date <= endDate) && w.Timeslot == "AM" && w.Location == "DB")
-                .Select(s=>s).ToList();
+            return AttendanceRepository
+                .Find(w => w.Barcode == barcode && (w.Date >= startDate && w.Date <= endDate) && w.TimeslotId == "AM" && w.LocationId == "DB").ToList()
+                .Select(record=>new AttendanceRecordViewModel(record));
         }
 
 
-        public OfferedViewModel GetOfferedById(string id) {
+       /* public OfferedViewModel GetOfferedById(string id) {
             return OfferedRepository.GetById(id);
         }
 
@@ -199,20 +201,20 @@ namespace AttendanceReport.Repositories
         {
             return UserRepository.Delete(user);
         }
+        */
 
-
-        public void Save()
+        public int Complete()
         {
-            context.SaveChangesAsync();
+            return Context.SaveChanges();
         }
-
+        
         protected virtual void Dispose(bool disposed)
         {
             if (!this.disposed)
             {
                 if (disposed)
                 {
-                    context.Dispose();
+                    Context.Dispose();
                 }
             }
 

@@ -1,4 +1,5 @@
 ﻿using AttendanceReport.Models;
+using AttendanceReport.Persistence.Repositories;
 using AttendanceReport.Repositories;
 using AttendanceReport.Security;
 using System;
@@ -17,7 +18,7 @@ namespace AttendanceReport.Controllers
         // GET: User
         public ActionResult Find(string Id)
         {
-            return View(uow.FindAllUser(Id ?? "").ToList());
+            return View(uow.UserRepository.FindAll(Id ?? string.Empty).ToList());
         }
 
         public ActionResult Create()
@@ -42,13 +43,13 @@ namespace AttendanceReport.Controllers
                 Faculty = ((Helpers.UserRole)userRole.TypeId) == Helpers.UserRole.Faculty ? new FacultyViewModel() { Id = Convert.ToInt32(userRole.ObjectId) } : null
             };
 
-            if (uow.GetUserById(user.UserName) != null) {
+            if (uow.UserRepository.GetById(user.UserName) != null) {
                 ViewBag.Error = "This user exist in the database. Please, choose another name";
                 return View(userRole);
             }
 
-            uow.InsertUser(user);
-            uow.Save();
+            uow.UserRepository.Add(user);
+            uow.Complete();
 
             return RedirectToAction("Find");
         }
@@ -63,8 +64,8 @@ namespace AttendanceReport.Controllers
         {
             if (!string.IsNullOrEmpty(id))
             {
-                uow.DeleteUser(new UserViewModel() { UserName = id });
-                uow.Save();
+                uow.UserRepository.Delete(new UserViewModel() { UserName = id });
+                uow.Complete();
             }
 
             return RedirectToAction("Find");

@@ -236,10 +236,16 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Controllers\UserController.cs" />
-    <Compile Include="Models\AttendanceRecordViewModel.cs" />
-    <Compile Include="Models\SessionViewModel.cs" />
-    <Compile Include="Models\StudentAttendanceViewModel.cs" />
-    <Compile Include="Models\UserRoleViewModel.cs" />
+    <Compile Include="Core\Repositories\IAttendanceRepository.cs" />
+    <Compile Include="Core\Repositories\IEnrollmentRepository.cs" />
+    <Compile Include="Core\Repositories\IFacultyRepository.cs" />
+    <Compile Include="Core\Repositories\IOfferedRepository.cs" />
+    <Compile Include="Core\Repositories\IStudentRepository.cs" />
+    <Compile Include="Core\Repositories\IUserRepository.cs" />
+    <Compile Include="Persistence\Models\AttendanceRecordViewModel.cs" />
+    <Compile Include="Persistence\Models\SessionViewModel.cs" />
+    <Compile Include="Persistence\Models\StudentAttendanceViewModel.cs" />
+    <Compile Include="Persistence\Models\UserRoleViewModel.cs" />
     <Compile Include="cours.cs">
       <DependentUpon>AttendanceModel.tt</DependentUpon>
     </Compile>
@@ -253,16 +259,16 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Enums\UserRole.cs" />
-    <Compile Include="Models\EnrollmentViewModel.cs" />
-    <Compile Include="Models\OfferedViewModel.cs" />
-    <Compile Include="Models\Person\FacultyViewModel.cs" />
-    <Compile Include="Models\Person\PersonViewModel.cs" />
-    <Compile Include="Models\Person\StudentViewModel.cs" />
-    <Compile Include="Models\UserViewModel.cs" />
-    <Compile Include="Repositories\AttendanceRepository.cs" />
-    <Compile Include="Repositories\FacultyRepository.cs" />
-    <Compile Include="Repositories\IRepository.cs" />
-    <Compile Include="Models\LoginViewModel.cs" />
+    <Compile Include="Persistence\Models\EnrollmentViewModel.cs" />
+    <Compile Include="Persistence\Models\OfferedViewModel.cs" />
+    <Compile Include="Persistence\Models\Person\FacultyViewModel.cs" />
+    <Compile Include="Persistence\Models\Person\PersonViewModel.cs" />
+    <Compile Include="Persistence\Models\Person\StudentViewModel.cs" />
+    <Compile Include="Persistence\Models\UserViewModel.cs" />
+    <Compile Include="Persistence\Repositories\AttendanceRepository.cs" />
+    <Compile Include="Persistence\Repositories\FacultyRepository.cs" />
+    <Compile Include="Core\Repositories\IRepository.cs" />
+    <Compile Include="Persistence\Models\LoginViewModel.cs" />
     <Compile Include="offered.cs">
       <DependentUpon>AttendanceModel.tt</DependentUpon>
     </Compile>
@@ -270,12 +276,13 @@
       <DependentUpon>AttendanceModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\EnrollmentRepository.cs" />
-    <Compile Include="Repositories\IUnitOfWork.cs" />
-    <Compile Include="Repositories\OfferedRepository.cs" />
-    <Compile Include="Repositories\StudentRepository.cs" />
-    <Compile Include="Repositories\UnitOfWork.cs" />
-    <Compile Include="Repositories\UserRepository.cs" />
+    <Compile Include="Persistence\Repositories\EnrollmentRepository.cs" />
+    <Compile Include="Core\IUnitOfWork.cs" />
+    <Compile Include="Persistence\Repositories\OfferedRepository.cs" />
+    <Compile Include="Persistence\Repository.cs" />
+    <Compile Include="Persistence\Repositories\StudentRepository.cs" />
+    <Compile Include="Persistence\UnitOfWork.cs" />
+    <Compile Include="Persistence\Repositories\UserRepository.cs" />
     <Compile Include="Security\AttendanceAuthorizeAttribute.cs" />
     <Compile Include="Security\AttendancePrincipal.cs" />
     <Compile Include="Security\SessionPersister.cs" />
@@ -342,7 +349,6 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\AccessDenied\Index.cshtml" />

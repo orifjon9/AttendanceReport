@@ -1,4 +1,5 @@
-﻿using AttendanceReport.Repositories;
+﻿using AttendanceReport.Core.Repositories;
+using AttendanceReport.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,6 @@ namespace AttendanceReport.Security
 {
     public class AttendanceAuthorizeAttribute: System.Web.Mvc.AuthorizeAttribute
     {
-        private UserRepository userRepository;
         public override void OnAuthorization(AuthorizationContext actionContext)
         {
             if (string.IsNullOrEmpty(SessionPersister.UserName))

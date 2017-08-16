@@ -1,5 +1,5 @@
 ﻿@using AttendanceReport.Models
-@model List<StudentAttendanceViewModel>
+@model IEnumerable<StudentAttendanceViewModel>
 @{
     ViewBag.Title = "View attendance by course";
 }
@@ -9,7 +9,7 @@
     @if (Model != null)
     {
         <div class="col-sx-12">
-            @if (Model != null && Model.Count > 0)
+            @if (Model != null && Model.Count() > 0)
             {
                 <hr />
                 <div class="panel panel-success">
@@ -40,8 +40,8 @@
                                 <tr>
                                     <td>@item.CourseOffered.CourseNumber</td>
                                     <td>@item.Student.StudentId</td>
-                                    <td>@item.Sessions.Count</td>
-                                    <td>@item.AttendanceRecords.Count</td>
+                                    <td>@item.Sessions.Count()</td>
+                                    <td>@item.AttendanceRecords.Count()</td>
                                     <td>@item.GetMeditaionPercentage().ToString("0.00")</td>
                                     <td>@item.GetMeditationGrade()</td>
 

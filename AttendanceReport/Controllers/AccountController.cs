@@ -11,6 +11,7 @@ using Microsoft.Owin.Security;
 using AttendanceReport.Models;
 using AttendanceReport.Repositories;
 using AttendanceReport.Security;
+using AttendanceReport.Persistence.Repositories;
 
 namespace AttendanceReport.Controllers
 {
@@ -42,7 +43,7 @@ namespace AttendanceReport.Controllers
                 return View(model);
             }
 
-            var userViewModel = uow.GetUser(model.UserName, model.Password);
+            var userViewModel = uow.UserRepository.Find(model.UserName, model.Password);
             if (userViewModel == null)
             {
                 ModelState.AddModelError("", "Invalid login attempt.");

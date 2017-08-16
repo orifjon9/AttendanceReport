@@ -1,5 +1,5 @@
 ﻿@using AttendanceReport.Models
-@model List<OfferedViewModel>
+@model IEnumerable<OfferedViewModel>
 @{
     ViewBag.Title = "Faculty Courses";
 }
@@ -9,7 +9,7 @@
     @if (Model != null)
     {
         <div class="col-sm-12">
-            @if (Model != null && Model.Count > 0)
+            @if (Model != null && Model.Count() > 0)
             {
                 <hr />
                 <div class="panel panel-success">

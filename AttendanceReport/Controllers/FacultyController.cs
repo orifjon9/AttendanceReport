@@ -1,4 +1,5 @@
-﻿using AttendanceReport.Repositories;
+﻿using AttendanceReport.Persistence.Repositories;
+using AttendanceReport.Repositories;
 using AttendanceReport.Security;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace AttendanceReport.Controllers
         public ActionResult Courses()
         {
             if (SessionPersister.Current != null)
-                return View(uow.GetOfferedByFacultyID(SessionPersister.Current.User.Faculty.Id));
+                return View(uow.OfferedRepository.GetByFacultyID(SessionPersister.Current.User.Faculty.Id));
 
             return View("AccessDebied");
         }
